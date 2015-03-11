@@ -11,13 +11,24 @@
  */
  
 //Main code
-var checkJSPluginExist = function (plugin_name, reload_url) {
-	if (typeof window[plugin_name] !== "function") {
-		var tag = document.createElement('script');
-		tag.src = reload_url;
-		var headerElementTag = document.getElementsByTagName('head')[0];
-		headerElementTag.appendChild(tag);
-		return false;
+var checkJSPluginExist = function (plugin_name, reload_url, depend_plugin_name) {
+	//window[plugin_name] || document.write('<script src="' + reload_url + '">\x3C/script>');
+	if (typeof depend_plugin_name !== 'undefined') {
+		if (typeof window[depend_plugin_name][plugin_name] !== "function") {
+			var tag = document.createElement('script');
+			tag.src = reload_url;
+			var headerElementTag = document.getElementsByTagName('head')[0];
+			headerElementTag.appendChild(tag);
+			return false;
+		}
+	} else {
+		if (typeof window[plugin_name] !== "function") {
+			var tag = document.createElement('script');
+			tag.src = reload_url;
+			var headerElementTag = document.getElementsByTagName('head')[0];
+			headerElementTag.appendChild(tag);
+			return false;
+		}
 	}
 	return true;
 };
